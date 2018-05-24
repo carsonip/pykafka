@@ -119,6 +119,11 @@ for messages which were produced from the current thread. Also, if you're using
 `delivery_reports=True`, failing to consume the delivery report queue will cause
 PyKafka's memory usage to grow unbounded.
 
+Keep in mind that since PyKafka defaults to send messages in batch, it will wait 
+for `linger_ms` before sending the messages out if the queue is not full enough.
+The delay can be removed by configuring `min_queued_messages` or `linger_ms` at 
+the expense of efficiency.
+
 You can also consume messages from this topic using a `Consumer` instance.
 
 .. sourcecode:: python
