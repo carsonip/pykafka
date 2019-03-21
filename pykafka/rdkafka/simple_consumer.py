@@ -13,6 +13,8 @@ from . import helpers
 
 log = logging.getLogger(__name__)
 
+LIBRDKAFKA_MAX_ALLOWED_QUEUED_MAX_MESSAGE_BYTES = 2097151  # see librdkafka commit cc43f4
+
 
 class RdKafkaSimpleConsumer(SimpleConsumer):
     """A pykafka.SimpleConsumer with librdkafka-based fetchers
@@ -251,7 +253,7 @@ class RdKafkaSimpleConsumer(SimpleConsumer):
             "queued.max.messages.kbytes": str(min(
                 self._queued_max_messages
                 * self._fetch_message_max_bytes // 1024,
-                2097151)),  # queued.max.messages.kbytes is 1..2097151 according to librdkafka cc43f4
+                LIBRDKAFKA_MAX_ALLOWED_QUEUED_MAX_MESSAGE_BYTES)),
 
             "fetch.wait.max.ms": self._fetch_wait_max_ms,
             "fetch.message.max.bytes": self._fetch_message_max_bytes,
